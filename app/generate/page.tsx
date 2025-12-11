@@ -76,17 +76,17 @@ export default function GeneratePage() {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 leading-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3 leading-tight">
             {th.destinationForm.title}
           </h1>
-          <p className="text-base sm:text-lg text-gray-600 px-4">
+          <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 px-4">
             {th.destinationForm.subtitle}
           </p>
         </div>
 
         {/* Form Section */}
         {!itinerary && (
-          <div className="bg-white rounded-xl sm:rounded-2xl shadow-xl p-6 sm:p-8 mb-8">
+          <div className="bg-white dark:bg-slate-800 rounded-xl sm:rounded-2xl shadow-xl dark:shadow-2xl p-6 sm:p-8 mb-8">
             <DestinationForm onSubmit={handleSubmit} isLoading={isLoading} />
           </div>
         )}
@@ -94,11 +94,11 @@ export default function GeneratePage() {
         {/* Loading Indicator (Requirement 6.1) */}
         {isLoading && (
           <div className="flex flex-col items-center justify-center py-12 sm:py-16 space-y-4">
-            <Loader2 className="w-12 h-12 sm:w-16 sm:h-16 text-blue-600 animate-spin" />
-            <p className="text-lg sm:text-xl text-gray-700 font-medium">
+            <Loader2 className="w-12 h-12 sm:w-16 sm:h-16 text-blue-600 dark:text-blue-400 animate-spin" />
+            <p className="text-lg sm:text-xl text-gray-700 dark:text-gray-300 font-medium">
               {th.destinationForm.generating}
             </p>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               {th.common.loading}
             </p>
           </div>
@@ -106,17 +106,17 @@ export default function GeneratePage() {
 
         {/* Error Display with Thai messages and styling (Requirement 6.5) */}
         {error && !isLoading && (
-          <div className="bg-red-50 border-l-4 border-red-500 rounded-lg p-5 sm:p-6 mb-8 animate-fadeIn">
+          <div className="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 dark:border-red-400 rounded-lg p-5 sm:p-6 mb-8 animate-fadeIn">
             <div className="flex items-start">
-              <AlertCircle className="w-5 h-5 sm:w-6 sm:h-6 text-red-500 mr-3 flex-shrink-0 mt-0.5" />
+              <AlertCircle className="w-5 h-5 sm:w-6 sm:h-6 text-red-500 dark:text-red-400 mr-3 flex-shrink-0 mt-0.5" />
               <div className="flex-1">
-                <h3 className="text-base sm:text-lg font-semibold text-red-800 mb-2">
+                <h3 className="text-base sm:text-lg font-semibold text-red-800 dark:text-red-200 mb-2">
                   {th.common.error}
                 </h3>
-                <p className="text-sm sm:text-base text-red-700 mb-4">{error}</p>
+                <p className="text-sm sm:text-base text-red-700 dark:text-red-300 mb-4">{error}</p>
                 <button
                   onClick={() => setError(null)}
-                  className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-all duration-300 active:scale-95 text-sm sm:text-base"
+                  className="bg-red-600 dark:bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-700 dark:hover:bg-red-600 transition-all duration-300 active:scale-95 text-sm sm:text-base"
                 >
                   {th.errors.tryAgain}
                 </button>
@@ -137,7 +137,7 @@ export default function GeneratePage() {
                   setItinerary(null);
                   setError(null);
                 }}
-                className="bg-blue-600 text-white px-6 sm:px-8 py-3 rounded-lg font-medium hover:bg-blue-700 transition-all duration-300 active:scale-95 shadow-md hover:shadow-lg text-sm sm:text-base"
+                className="bg-blue-600 dark:bg-blue-500 text-white px-6 sm:px-8 py-3 rounded-lg font-medium hover:bg-blue-700 dark:hover:bg-blue-600 transition-all duration-300 active:scale-95 shadow-md hover:shadow-lg text-sm sm:text-base hover-lift"
               >
                 {th.destinationForm.title}
               </button>

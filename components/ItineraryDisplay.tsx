@@ -38,14 +38,14 @@ export function ItineraryDisplay({ itinerary, onSave }: ItineraryDisplayProps) {
   return (
     <div className="max-w-4xl mx-auto animate-fadeIn">
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl sm:rounded-2xl p-6 sm:p-8 mb-8 text-white shadow-xl">
+      <div className="bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-700 dark:to-blue-800 rounded-xl sm:rounded-2xl p-6 sm:p-8 mb-8 text-white shadow-xl dark:shadow-2xl animate-scaleIn">
         <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
           <div className="flex-1">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 leading-tight">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 leading-tight animate-slideIn">
               {itinerary.destination}
             </h2>
             
-            <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-4 text-blue-50">
+            <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-4 text-blue-50 animate-slideIn" style={{ animationDelay: '200ms' }}>
               <div className="flex items-center gap-2">
                 <Calendar className="w-5 h-5 flex-shrink-0" />
                 <span className="text-sm sm:text-base">
@@ -63,7 +63,7 @@ export function ItineraryDisplay({ itinerary, onSave }: ItineraryDisplayProps) {
           {onSave && (
             <button
               onClick={onSave}
-              className="w-full sm:w-auto bg-white text-blue-600 px-6 py-2.5 rounded-lg font-medium hover:bg-blue-50 transition-all duration-300 shadow-md hover:shadow-lg active:scale-95"
+              className="w-full sm:w-auto bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 px-6 py-2.5 rounded-lg font-medium hover:bg-blue-50 dark:hover:bg-slate-700 transition-all duration-300 shadow-md hover:shadow-lg active:scale-95 hover-lift"
             >
               {th.common.save}
             </button>
@@ -73,17 +73,18 @@ export function ItineraryDisplay({ itinerary, onSave }: ItineraryDisplayProps) {
 
       {/* Daily Schedules */}
       <div className="mb-12">
-        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 px-1">
+        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-6 px-1 animate-slideIn">
           {th.itinerary.activities}
         </h3>
         
         <div className="space-y-8">
-          {sortedSchedules.map((schedule) => (
-            <ActivitySchedule
-              key={schedule.day}
-              schedule={schedule}
-              dayNumber={schedule.day}
-            />
+          {sortedSchedules.map((schedule, index) => (
+            <div key={schedule.day} className="animate-fadeIn" style={{ animationDelay: `${index * 150}ms` }}>
+              <ActivitySchedule
+                schedule={schedule}
+                dayNumber={schedule.day}
+              />
+            </div>
           ))}
         </div>
       </div>
@@ -97,8 +98,8 @@ export function ItineraryDisplay({ itinerary, onSave }: ItineraryDisplayProps) {
           : [];
         
         return recsArray.length > 0 && (
-          <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-md">
-            <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6">
+          <div className="bg-gradient-to-br from-gray-50 to-blue-50 dark:from-slate-800 dark:to-slate-700 rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-md dark:shadow-xl animate-scaleIn">
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-6">
               {th.itinerary.recommendations}
             </h3>
             
