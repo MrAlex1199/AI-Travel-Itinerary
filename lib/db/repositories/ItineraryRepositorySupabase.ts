@@ -174,13 +174,19 @@ export class ItineraryRepositorySupabase implements IItineraryRepository {
       location: rec.location || undefined,
     }));
 
+    // Ensure proper timezone handling - Supabase returns ISO string with Z suffix for TIMESTAMPTZ
+    const generatedAtStr = itineraryData.generated_at;
+    const generatedAt = generatedAtStr.endsWith('Z') || generatedAtStr.includes('+') || generatedAtStr.includes('-')
+      ? new Date(generatedAtStr)
+      : new Date(generatedAtStr + 'Z'); // Append Z if no timezone info (treat as UTC)
+
     return {
       id: itineraryData.id,
       destination: itineraryData.destination,
       duration: itineraryData.duration,
       dailySchedules,
       recommendations,
-      generatedAt: new Date(itineraryData.generated_at),
+      generatedAt,
     };
   }
 

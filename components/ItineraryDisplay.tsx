@@ -22,7 +22,7 @@ export function ItineraryDisplay({ itinerary, onSave }: ItineraryDisplayProps) {
   // Sort daily schedules chronologically by day number
   const sortedSchedules = [...dailySchedulesArray].sort((a, b) => a.day - b.day);
 
-  // Format date for display
+  // Format date for display with timezone
   const formatDate = (date: Date) => {
     const dateObj = typeof date === 'string' ? new Date(date) : date;
     return new Intl.DateTimeFormat('th-TH', {
@@ -31,6 +31,7 @@ export function ItineraryDisplay({ itinerary, onSave }: ItineraryDisplayProps) {
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
+      timeZone: 'Asia/Bangkok',
     }).format(dateObj);
   };
 
