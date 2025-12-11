@@ -38,8 +38,28 @@ export default function GeneratePage() {
         throw new Error(errorData.error || th.errors.aiGenerationFailed);
       }
 
-      const generatedItinerary = await response.json();
-      setItinerary(generatedItinerary);
+      const responseData = await response.json();
+      
+      // API returns { success, message, itinerary }
+      const itineraryData: Itinerary = responseData.itinerary || responseData;
+      
+      // Ensure arrays are properly deserialized (fix JSON serialization edge cases)
+      const deserializedItinerary: Itinerary = {
+        ...itineraryData,
+        dailySchedules: Array.isArray(itineraryData.dailySchedules)
+          ? itineraryData.dailySchedules
+          : typeof itineraryData.dailySchedules === 'string'
+          ? JSON.parse(itineraryData.dailySchedules)
+          : [],
+        recommendations: Array.isArray(itineraryData.recommendations)
+          ? itineraryData.recommendations
+          : typeof itineraryData.recommendations === 'string'
+          ? JSON.parse(itineraryData.recommendations)
+          : [],
+        generatedAt: new Date(itineraryData.generatedAt),
+      };
+      
+      setItinerary(deserializedItinerary);
     } catch (err) {
       // Handle and display errors with Thai messages (Requirement 6.5)
       const errorMessage = err instanceof Error 
@@ -52,21 +72,21 @@ export default function GeneratePage() {
   };
 
   return (
-    <div className="py-8 sm:py-12 px-4 sm:px-6 lg:px-8 bg-hero-pattern min-h-screen -mt-8 pt-8 transition-colors duration-300">
+    <div className="py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 leading-tight">
-            <span className="text-gradient">{th.destinationForm.title}</span>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 leading-tight">
+            {th.destinationForm.title}
           </h1>
-          <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 px-4">
+          <p className="text-base sm:text-lg text-gray-600 px-4">
             {th.destinationForm.subtitle}
           </p>
         </div>
 
         {/* Form Section */}
         {!itinerary && (
-          <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 sm:p-8 mb-8 border border-gray-100 dark:border-gray-700 transition-colors duration-300">
+          <div className="bg-white rounded-xl sm:rounded-2xl shadow-xl p-6 sm:p-8 mb-8">
             <DestinationForm onSubmit={handleSubmit} isLoading={isLoading} />
           </div>
         )}
@@ -74,11 +94,11 @@ export default function GeneratePage() {
         {/* Loading Indicator (Requirement 6.1) */}
         {isLoading && (
           <div className="flex flex-col items-center justify-center py-12 sm:py-16 space-y-4">
-            <Loader2 className="w-12 h-12 sm:w-16 sm:h-16 text-blue-600 dark:text-blue-400 animate-spin" />
-            <p className="text-lg sm:text-xl text-gray-700 dark:text-gray-200 font-medium">
+            <Loader2 className="w-12 h-12 sm:w-16 sm:h-16 text-blue-600 animate-spin" />
+            <p className="text-lg sm:text-xl text-gray-700 font-medium">
               {th.destinationForm.generating}
             </p>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-gray-500">
               {th.common.loading}
             </p>
           </div>
@@ -86,14 +106,14 @@ export default function GeneratePage() {
 
         {/* Error Display with Thai messages and styling (Requirement 6.5) */}
         {error && !isLoading && (
-          <div className="bg-red-50 dark:bg-red-900/30 border-l-4 border-red-500 rounded-lg p-5 sm:p-6 mb-8 animate-fadeIn">
+          <div className="bg-red-50 border-l-4 border-red-500 rounded-lg p-5 sm:p-6 mb-8 animate-fadeIn">
             <div className="flex items-start">
               <AlertCircle className="w-5 h-5 sm:w-6 sm:h-6 text-red-500 mr-3 flex-shrink-0 mt-0.5" />
               <div className="flex-1">
-                <h3 className="text-base sm:text-lg font-semibold text-red-800 dark:text-red-300 mb-2">
+                <h3 className="text-base sm:text-lg font-semibold text-red-800 mb-2">
                   {th.common.error}
                 </h3>
-                <p className="text-sm sm:text-base text-red-700 dark:text-red-400 mb-4">{error}</p>
+                <p className="text-sm sm:text-base text-red-700 mb-4">{error}</p>
                 <button
                   onClick={() => setError(null)}
                   className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-all duration-300 active:scale-95 text-sm sm:text-base"

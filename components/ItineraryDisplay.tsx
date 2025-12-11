@@ -12,8 +12,15 @@ interface ItineraryDisplayProps {
 }
 
 export function ItineraryDisplay({ itinerary, onSave }: ItineraryDisplayProps) {
+  // Defensive: ensure dailySchedules is an array (handle JSON serialization edge cases)
+  const dailySchedulesArray = Array.isArray(itinerary.dailySchedules)
+    ? itinerary.dailySchedules
+    : typeof itinerary.dailySchedules === 'string'
+    ? JSON.parse(itinerary.dailySchedules)
+    : [];
+  
   // Sort daily schedules chronologically by day number
-  const sortedSchedules = [...itinerary.dailySchedules].sort((a, b) => a.day - b.day);
+  const sortedSchedules = [...dailySchedulesArray].sort((a, b) => a.day - b.day);
 
   // Format date for display
   const formatDate = (date: Date) => {
@@ -65,7 +72,7 @@ export function ItineraryDisplay({ itinerary, onSave }: ItineraryDisplayProps) {
 
       {/* Daily Schedules */}
       <div className="mb-12">
-        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 px-1">
+        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 px-1">
           {th.itinerary.activities}
         </h3>
         
@@ -81,15 +88,23 @@ export function ItineraryDisplay({ itinerary, onSave }: ItineraryDisplayProps) {
       </div>
 
       {/* Recommendations */}
-      {itinerary.recommendations.length > 0 && (
-        <div className="bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-800 dark:to-blue-900/30 rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-md transition-colors duration-300">
-          <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">
-            {th.itinerary.recommendations}
-          </h3>
-          
-          <RecommendationList recommendations={itinerary.recommendations} />
-        </div>
-      )}
+      {(() => {
+        const recsArray = Array.isArray(itinerary.recommendations)
+          ? itinerary.recommendations
+          : typeof itinerary.recommendations === 'string'
+          ? JSON.parse(itinerary.recommendations)
+          : [];
+        
+        return recsArray.length > 0 && (
+          <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-md">
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6">
+              {th.itinerary.recommendations}
+            </h3>
+            
+            <RecommendationList recommendations={recsArray} />
+          </div>
+        );
+      })()}
     </div>
   );
 }

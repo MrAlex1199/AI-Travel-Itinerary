@@ -45,42 +45,28 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-hero-pattern flex items-center justify-center px-4 py-8 sm:py-12 transition-colors duration-300">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center px-4 py-8 sm:py-12">
       <div className="max-w-md w-full">
         {/* Card container */}
-        <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 sm:p-8 space-y-6 animate-fadeIn border border-gray-100 dark:border-gray-700 transition-colors duration-300">
+        <div className="bg-white rounded-xl sm:rounded-2xl shadow-xl p-6 sm:p-8 space-y-6 animate-fadeIn">
           {/* Header */}
           <div className="text-center space-y-2">
-            <div className="flex justify-center mb-4">
-              <svg className="w-16 h-16" viewBox="0 0 100 100">
-                <defs>
-                  <linearGradient id="loginGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style={{ stopColor: '#3B82F6' }} />
-                    <stop offset="100%" style={{ stopColor: '#8B5CF6' }} />
-                  </linearGradient>
-                </defs>
-                <circle cx="50" cy="50" r="48" fill="url(#loginGrad)"/>
-                <path d="M30 55 L45 35 L55 45 L70 30 L75 55 Z" fill="white" opacity="0.9"/>
-                <circle cx="35" cy="40" r="6" fill="white" opacity="0.9"/>
-                <path d="M25 60 Q50 75 75 60 L75 70 Q50 85 25 70 Z" fill="white" opacity="0.7"/>
-              </svg>
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-gradient">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
               {t('auth.loginTitle')}
             </h1>
-            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">{t('auth.loginSubtitle')}</p>
+            <p className="text-sm sm:text-base text-gray-600">{t('auth.loginSubtitle')}</p>
           </div>
 
           {/* Auth form */}
           <AuthForm mode="login" onSubmit={handleLogin} error={error} />
 
           {/* Register link */}
-          <div className="text-center pt-4 border-t border-gray-200 dark:border-gray-700">
-            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+          <div className="text-center pt-4 border-t border-gray-200">
+            <p className="text-xs sm:text-sm text-gray-600">
               {t('auth.noAccount')}{' '}
               <Link
                 href="/register"
-                className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors duration-300"
+                className="font-medium text-blue-600 hover:text-blue-700 transition-colors duration-300"
               >
                 {t('auth.createAccount')}
               </Link>
@@ -89,7 +75,7 @@ export default function LoginPage() {
         </div>
 
         {/* Footer text */}
-        <p className="text-center text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-6">
+        <p className="text-center text-xs sm:text-sm text-gray-600 mt-6">
           AI Travel Itinerary
         </p>
       </div>

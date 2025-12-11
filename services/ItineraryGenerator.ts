@@ -4,20 +4,18 @@
  * Generates personalized travel itineraries using Google Gemini AI via Genkit.
  */
 
-import { generate } from '@genkit-ai/ai';
-import { ensureGenkitConfigured } from '@/lib/genkit/config';
+import { aiClient } from '@/lib/googleai/client';
 import { TripInput, Itinerary, Recommendation } from '@/types';
 import { z } from 'zod';
 
 // Available models to try (in order of preference, December 2025)
-// Using string names that are registered by the googleAI plugin
-// Preference: Fastest stable first, then more capable, with previews for cutting-edge
-// Note: 'gemini-3-pro-preview' is experimental - use for advanced tasks only
+// Using the official Google Gemini models via @google/genai
+// Preference: Fastest stable first, then more capable models
 const FALLBACK_MODELS = [
-  'googleai/gemini-2.5-flash',      // Fastest stable, great for production (balanced speed/intelligence)
-  'googleai/gemini-2.5-pro',        // Most capable stable for complex reasoning/coding
-  'googleai/gemini-3-pro-preview',  // Latest preview (Nov 2025) - agentic, multimodal, high intelligence (use cautiously)
-  'googleai/gemini-2.0-flash-exp',  // Experimental fast fallback (if 2.5 unavailable)
+  'gemini-2.5-flash',      // Fastest & best for most tasks
+  'gemini-2.5-pro',        // More capable for complex reasoning
+  'gemini-1.5-pro',        // High-quality responses
+  'gemini-1.5-flash',      // Fast fallback
 ] as const;
 
 const ActivitySchema = z.object({
@@ -62,8 +60,6 @@ export class ItineraryGenerator implements IItineraryGenerator {
     if (duration < 1) {
       throw new Error('Duration must be at least 1 day');
     }
-
-    ensureGenkitConfigured();
 
     let lastError: Error | null = null;
 
@@ -123,23 +119,37 @@ export class ItineraryGenerator implements IItineraryGenerator {
   ): Promise<Itinerary> {
     const prompt = this.buildPrompt(destination, duration, locale);
 
-    const response = await generate({
+    // Use the official Google GenAI client
+    const response = await aiClient.models.generateContent({
       model,
-      prompt,
-      config: {
-        temperature: 0.7,
-        maxOutputTokens: 4096,
-      },
+      contents: prompt,
+      // You can add additional options here (temperature, safety, etc.)
     });
 
-    const generatedText = (typeof response.text === 'function' ? response.text() : response.text) as string;
-    
+    // SDK response shapes vary across versions; try common fields
+    let generatedText: string | undefined;
+    // new SDKs sometimes expose `response.text`
+    if ((response as any)?.text) {
+      generatedText = typeof (response as any).text === 'function' ? (response as any).text() : (response as any).text;
+    }
+    // other SDK shapes: response.output[0].content[0].text
+    if (!generatedText && (response as any)?.output?.[0]?.content) {
+      const content = (response as any).output[0].content;
+      const firstText = content.find((c: any) => typeof c.text === 'string' || c.type === 'output_text');
+      generatedText = firstText?.text || firstText?.parts?.join('') || undefined;
+    }
+
     if (!generatedText) {
       throw new Error('Empty response from AI');
     }
 
-    const itineraryData = this.parseAIResponse(generatedText);
+    const itineraryData = this.parseAIResponse(String(generatedText));
     const validated = ItineraryResponseSchema.parse(itineraryData);
+
+    // Sort activities by time for each day to ensure chronological order
+    validated.dailySchedules.forEach(schedule => {
+      schedule.activities.sort((a, b) => a.time.localeCompare(b.time));
+    });
 
     if (validated.dailySchedules.length !== duration) {
       throw new Error(`Expected ${duration} days but got ${validated.dailySchedules.length}`);

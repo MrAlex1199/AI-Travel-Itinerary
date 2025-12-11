@@ -23,14 +23,25 @@ const ItineraryRequestSchema = z.object({
 export async function POST(request: NextRequest) {
   try {
     // Verify authentication (Requirement 7.4, 7.5)
-    const authResult = await requireAuth(request);
+    // TEMP: Allow bypass with ?dev=true for testing AI generation
+    const url = new URL(request.url);
+    const isDev = url.searchParams.get('dev') === 'true' && process.env.NODE_ENV === 'development';
     
-    // If not authenticated, requireAuth returns a NextResponse with error
-    if (authResult instanceof NextResponse) {
-      return authResult;
+    let user: any = null;
+    if (!isDev) {
+      const authResult = await requireAuth(request);
+      
+      // If not authenticated, requireAuth returns a NextResponse with error
+      if (authResult instanceof NextResponse) {
+        return authResult;
+      }
+      
+      user = authResult.user;
+    } else {
+      // Dev mode: use fake user
+      user = { id: 'dev-test-user', email: 'dev@test.com' };
+      console.log('⚠️  Dev mode: using fake user for testing');
     }
-    
-    const { user } = authResult;
 
     // Parse and validate request body
     let body;

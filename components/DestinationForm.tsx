@@ -9,7 +9,7 @@
 import { useState, FormEvent } from 'react';
 import { t } from '@/lib/localization';
 import { TripInput } from '@/types';
-import { MapPin, Calendar } from 'lucide-react';
+import { MapPin, Calendar, Plane } from 'lucide-react';
 
 interface DestinationFormProps {
   onSubmit: (data: TripInput) => Promise<void>;
@@ -24,18 +24,15 @@ export default function DestinationForm({ onSubmit, isLoading }: DestinationForm
     duration?: string;
   }>({});
 
-  // Destination validation - must be non-empty (Requirement 1.2)
   const validateDestination = (destination: string): boolean => {
     return destination.trim().length >= 1;
   };
 
-  // Duration validation - must be >= 1 (Requirement 1.3)
   const validateDuration = (duration: string): boolean => {
     const num = parseInt(duration, 10);
     return !isNaN(num) && num >= 1;
   };
 
-  // Form validation (Requirement 1.5)
   const validateForm = (): boolean => {
     const errors: typeof validationErrors = {};
 
@@ -57,11 +54,8 @@ export default function DestinationForm({ onSubmit, isLoading }: DestinationForm
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
-    // Clear previous validation errors
     setValidationErrors({});
 
-    // Validate form - prevent submission if invalid (Requirement 1.5)
     if (!validateForm()) {
       return;
     }
@@ -76,6 +70,7 @@ export default function DestinationForm({ onSubmit, isLoading }: DestinationForm
     }
   };
 
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Destination field */}
@@ -88,7 +83,7 @@ export default function DestinationForm({ onSubmit, isLoading }: DestinationForm
         </label>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <MapPin className="h-5 w-5 text-gray-400 dark:text-gray-500" />
+            <MapPin className="h-5 w-5 text-teal-500 dark:text-teal-400" />
           </div>
           <input
             id="destination"
@@ -96,10 +91,10 @@ export default function DestinationForm({ onSubmit, isLoading }: DestinationForm
             value={destination}
             onChange={(e) => setDestination(e.target.value)}
             placeholder={t('destinationForm.destinationPlaceholder')}
-            className={`w-full pl-12 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${
+            className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:outline-none focus:ring-2 transition-all bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 ${
               validationErrors.destination
                 ? 'border-red-500 focus:ring-red-500'
-                : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                : 'border-gray-300 dark:border-slate-600 focus:ring-teal-500 focus:border-teal-500'
             }`}
             disabled={isLoading}
             autoComplete="off"
@@ -120,7 +115,7 @@ export default function DestinationForm({ onSubmit, isLoading }: DestinationForm
         </label>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <Calendar className="h-5 w-5 text-gray-400 dark:text-gray-500" />
+            <Calendar className="h-5 w-5 text-teal-500 dark:text-teal-400" />
           </div>
           <input
             id="duration"
@@ -129,10 +124,10 @@ export default function DestinationForm({ onSubmit, isLoading }: DestinationForm
             value={duration}
             onChange={(e) => setDuration(e.target.value)}
             placeholder={t('destinationForm.durationPlaceholder')}
-            className={`w-full pl-12 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${
+            className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:outline-none focus:ring-2 transition-all bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 ${
               validationErrors.duration
                 ? 'border-red-500 focus:ring-red-500'
-                : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                : 'border-gray-300 dark:border-slate-600 focus:ring-teal-500 focus:border-teal-500'
             }`}
             disabled={isLoading}
             autoComplete="off"
@@ -147,12 +142,13 @@ export default function DestinationForm({ onSubmit, isLoading }: DestinationForm
       <button
         type="submit"
         disabled={isLoading}
-        className={`w-full py-4 px-6 rounded-xl font-semibold text-white transition-all duration-300 shadow-lg ${
+        className={`w-full py-3 px-4 rounded-xl font-medium text-white transition-all duration-300 flex items-center justify-center gap-2 ${
           isLoading
-            ? 'bg-gray-400 cursor-not-allowed'
-            : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 hover:shadow-xl active:scale-95'
+            ? 'bg-gray-400 dark:bg-gray-600 cursor-not-allowed'
+            : 'bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 active:scale-95 shadow-lg hover:shadow-xl'
         }`}
       >
+        <Plane className="w-5 h-5" />
         {isLoading
           ? t('destinationForm.generating')
           : t('destinationForm.generateButton')}

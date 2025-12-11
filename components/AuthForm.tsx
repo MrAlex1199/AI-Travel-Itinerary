@@ -96,7 +96,7 @@ export default function AuthForm({ mode, onSubmit, error }: AuthFormProps) {
       <div>
         <label
           htmlFor="email"
-          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+          className="block text-sm font-medium text-gray-700 mb-2"
         >
           {t('auth.email')}
         </label>
@@ -105,16 +105,16 @@ export default function AuthForm({ mode, onSubmit, error }: AuthFormProps) {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 ${
+          className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition-all ${
             validationErrors.email
               ? 'border-red-500 focus:ring-red-500'
-              : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+              : 'border-gray-300 focus:ring-blue-500'
           }`}
           disabled={isLoading}
           autoComplete="email"
         />
         {validationErrors.email && (
-          <p className="mt-2 text-sm text-red-600 dark:text-red-400">{validationErrors.email}</p>
+          <p className="mt-2 text-sm text-red-600">{validationErrors.email}</p>
         )}
       </div>
 
@@ -122,7 +122,7 @@ export default function AuthForm({ mode, onSubmit, error }: AuthFormProps) {
       <div>
         <label
           htmlFor="password"
-          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+          className="block text-sm font-medium text-gray-700 mb-2"
         >
           {t('auth.password')}
         </label>
@@ -131,16 +131,16 @@ export default function AuthForm({ mode, onSubmit, error }: AuthFormProps) {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 ${
+          className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition-all ${
             validationErrors.password
               ? 'border-red-500 focus:ring-red-500'
-              : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+              : 'border-gray-300 focus:ring-blue-500'
           }`}
           disabled={isLoading}
           autoComplete={isRegisterMode ? 'new-password' : 'current-password'}
         />
         {validationErrors.password && (
-          <p className="mt-2 text-sm text-red-600 dark:text-red-400">{validationErrors.password}</p>
+          <p className="mt-2 text-sm text-red-600">{validationErrors.password}</p>
         )}
       </div>
 
@@ -149,7 +149,7 @@ export default function AuthForm({ mode, onSubmit, error }: AuthFormProps) {
         <div>
           <label
             htmlFor="confirmPassword"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+            className="block text-sm font-medium text-gray-700 mb-2"
           >
             {t('auth.confirmPassword')}
           </label>
@@ -158,16 +158,16 @@ export default function AuthForm({ mode, onSubmit, error }: AuthFormProps) {
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 ${
+            className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition-all ${
               validationErrors.confirmPassword
                 ? 'border-red-500 focus:ring-red-500'
-                : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                : 'border-gray-300 focus:ring-blue-500'
             }`}
             disabled={isLoading}
             autoComplete="new-password"
           />
           {validationErrors.confirmPassword && (
-            <p className="mt-2 text-sm text-red-600 dark:text-red-400">
+            <p className="mt-2 text-sm text-red-600">
               {validationErrors.confirmPassword}
             </p>
           )}
@@ -176,8 +176,8 @@ export default function AuthForm({ mode, onSubmit, error }: AuthFormProps) {
 
       {/* Server error display */}
       {error && (
-        <div className="p-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg">
-          <p className="text-sm text-red-800 dark:text-red-300">{error}</p>
+        <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+          <p className="text-sm text-red-800">{error}</p>
         </div>
       )}
 
@@ -185,10 +185,10 @@ export default function AuthForm({ mode, onSubmit, error }: AuthFormProps) {
       <button
         type="submit"
         disabled={isLoading}
-        className={`w-full py-4 px-6 rounded-xl font-semibold text-white transition-all duration-300 shadow-lg ${
+        className={`w-full py-3 px-4 rounded-lg font-medium text-white transition-all duration-300 ${
           isLoading
             ? 'bg-gray-400 cursor-not-allowed'
-            : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 hover:shadow-xl active:scale-95'
+            : 'bg-blue-600 hover:bg-blue-700 active:scale-95'
         }`}
       >
         {isLoading

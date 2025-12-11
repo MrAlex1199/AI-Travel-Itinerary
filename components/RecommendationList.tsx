@@ -60,7 +60,7 @@ export function RecommendationList({ recommendations }: RecommendationListProps)
   if (recommendations.length === 0) {
     return (
       <div className="text-center py-8">
-        <p className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">{th.itinerary.noRecommendations}</p>
+        <p className="text-gray-500 text-sm sm:text-base">{th.itinerary.noRecommendations}</p>
       </div>
     );
   }
@@ -75,7 +75,7 @@ export function RecommendationList({ recommendations }: RecommendationListProps)
                 {getCategoryIcon(category)}
               </div>
             </div>
-            <h4 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100">
+            <h4 className="text-lg sm:text-xl font-bold text-gray-900">
               {getCategoryTitle(category)}
             </h4>
           </div>
@@ -84,20 +84,20 @@ export function RecommendationList({ recommendations }: RecommendationListProps)
             {recs.map((rec) => (
               <div
                 key={rec.id}
-                className="bg-white dark:bg-gray-800 rounded-lg p-4 sm:p-5 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-lg hover:border-blue-200 dark:hover:border-blue-700 transition-all duration-300 group"
+                className="bg-white rounded-lg p-4 sm:p-5 shadow-sm border border-gray-100 hover:shadow-lg hover:border-blue-200 transition-all duration-300 group"
               >
                 <div className="flex items-start gap-2 mb-2">
                   <Star className="w-4 h-4 text-yellow-500 flex-shrink-0 mt-0.5" />
-                  <h5 className="font-bold text-gray-900 dark:text-gray-100 text-sm sm:text-base leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
+                  <h5 className="font-bold text-gray-900 text-sm sm:text-base leading-snug group-hover:text-blue-600 transition-colors duration-300">
                     {rec.name}
                   </h5>
                 </div>
-                <p className="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-3">
+                <p className="text-xs sm:text-sm text-gray-700 leading-relaxed mb-3">
                   {rec.description}
                 </p>
                 {rec.location && (
-                  <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400 pt-2 border-t border-gray-100 dark:border-gray-700">
-                    <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-400 dark:text-gray-500 flex-shrink-0" />
+                  <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 pt-2 border-t border-gray-100">
+                    <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-400 flex-shrink-0" />
                     <span className="line-clamp-1">{rec.location}</span>
                   </div>
                 )}

@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { PT_Sans } from 'next/font/google'
 import './globals.css'
 import { Navigation } from '@/components/Navigation'
-import { ThemeProvider } from '@/components/ThemeProvider'
 
 const ptSans = PT_Sans({
   weight: ['400', '700'],
@@ -11,11 +10,8 @@ const ptSans = PT_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'AI Travel Itinerary | แผนการเดินทางด้วย AI',
-  description: 'Generate personalized travel itineraries with AI - สร้างแผนการเดินทางที่เหมาะกับคุณด้วยปัญญาประดิษฐ์',
-  icons: {
-    icon: '/icon.svg',
-  },
+  title: 'AI Travel Itinerary',
+  description: 'Generate personalized travel itineraries with AI',
 }
 
 export default function RootLayout({
@@ -24,16 +20,14 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="th" suppressHydrationWarning>
+    <html lang="th">
       <body className={ptSans.className}>
-        <ThemeProvider>
-          <Navigation />
-          <main className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-            <div className="py-8">
-              {children}
-            </div>
-          </main>
-        </ThemeProvider>
+        <Navigation />
+        <main className="min-h-screen bg-gray-50 transition-page">
+          <div className="py-8">
+            {children}
+          </div>
+        </main>
       </body>
     </html>
   )
