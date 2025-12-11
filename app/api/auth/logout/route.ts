@@ -8,6 +8,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AuthService } from '@/services/AuthService';
 
+// Use Node.js runtime for database compatibility
+export const runtime = 'nodejs';
+
 export async function POST(request: NextRequest) {
   try {
     // Get session ID from cookie

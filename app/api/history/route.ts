@@ -9,6 +9,9 @@ import { HistoryService } from '@/services/HistoryService';
 import { AuthService } from '@/services/AuthService';
 import { th } from '@/lib/localization/th';
 
+// Use Node.js runtime for database compatibility
+export const runtime = 'nodejs';
+
 const historyService = new HistoryService();
 const authService = new AuthService();
 

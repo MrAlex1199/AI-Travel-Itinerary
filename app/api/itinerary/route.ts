@@ -14,6 +14,9 @@ import { itineraryRepository } from '@/lib/db/repositories';
 import { th } from '@/lib/localization/th';
 import { z } from 'zod';
 
+// Use Node.js runtime for this API route (not Edge Runtime)
+export const runtime = 'nodejs';
+
 // Request body validation schema
 const ItineraryRequestSchema = z.object({
   destination: z.string().min(1, th.validation.destinationRequired),
